@@ -12,6 +12,7 @@ namespace TicTacToe
         {
             TicTacToeGame t = new TicTacToeGame();
             t.Start();
+            Console.ReadKey();
         }
     }
 
@@ -24,8 +25,7 @@ namespace TicTacToe
             {0,0,0}
         };
         private static string[] oxIcon = { " ", "o", "x" };
-        public static bool yourTurn = true;
-        public static bool isFinished = false;
+        private static bool yourTurn = true;
         private static Regex regex = new Regex(@"[abc][012]", RegexOptions.IgnoreCase);
 
         public TicTacToeGame()
@@ -33,11 +33,11 @@ namespace TicTacToe
 
         }
 
-         public void Start()
+        public void Start()
         {
             yourTurn = true;
             ShowBoard();
-            while (!isFinished)
+            while (!isFinished())
             {
                 if (yourTurn)
                 {
@@ -83,7 +83,7 @@ namespace TicTacToe
                     x = 2;
                     break;
             }
-            gameBoard[x, y] = 1;
+            if (gameBoard[x, y] == 0) gameBoard[x, y] = 1;
         }
 
         private void moveAI()
@@ -117,7 +117,72 @@ namespace TicTacToe
                     x = 2;
                     break;
             }
-            gameBoard[x, y] = 2;
+            if (gameBoard[x, y] == 0) gameBoard[x, y] = 2;
+        }
+
+        private bool isFinished()
+        {
+            for(int x = 0; x <= 2; x++)
+            {
+                if (gameBoard[x, 0] == gameBoard[x, 1] && gameBoard[x, 1] == gameBoard[x, 2])
+                {
+                    if (gameBoard[x, 0] == 1)
+                    {
+                        Console.WriteLine("Player Win!");
+                        return true;
+                    }
+                    else if (gameBoard[x, 0] == 2)
+                    {
+                        Console.WriteLine("AI Win!");
+                        return true;
+                    }
+                }
+                if (gameBoard[0, x] == gameBoard[1, x] && gameBoard[1, x] == gameBoard[2, x])
+                {
+                    if (gameBoard[0, x] == 1)
+                    {
+                        Console.WriteLine("Player Win!");
+                        return true;
+                    }
+                    else if (gameBoard[0, x] == 2)
+                    {
+                        Console.WriteLine("AI Win!");
+                        return true;
+                    }
+                }
+            }
+            if(gameBoard[0,0] == gameBoard[1,1] && gameBoard[1,1] == gameBoard[2, 2])
+            {
+                if (gameBoard[0, 0] == 1)
+                {
+                    Console.WriteLine("Player Win!");
+                    return true;
+                }
+                else if (gameBoard[0, 0] == 2)
+                {
+                    Console.WriteLine("AI Win!");
+                    return true;
+                }
+            }
+            if (gameBoard[0, 2] == gameBoard[1, 1] && gameBoard[1, 1] == gameBoard[2, 0])
+            {
+                if (gameBoard[0, 2] == 1)
+                {
+                    Console.WriteLine("Player Win!");
+                    return true;
+                }
+                else if (gameBoard[0, 2] == 2)
+                {
+                    Console.WriteLine("AI Win!");
+                    return true;
+                }
+            }
+            foreach(int x in gameBoard)
+            {
+                if (x == 0) return false;
+            }
+            Console.WriteLine("Draw Game");
+            return true;
         }
 
         public void ShowBoard()
